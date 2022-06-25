@@ -1,33 +1,50 @@
 <template>
     <div class="map-container">
-        <div
-            class="map-wrapper"
-            :class="{ dragging, editing: $store.state.createMode }"
-            :style="{
-                transform: `scale(${zoom})`,
-                width: `${W}px`,
-                height: `${H}px`,
-                left: `${pos.x}px`,
-                top: `${pos.y}px`,
-            }"
-            @mousedown.left="mapMouseDown"
-            @click.left="mapClick"
-        >
-            <img class="map" draggable="false" src="@/assets/img/map.jpg" />
-            <MapMarkers />
-        </div>
-        <MapOverlay />
+        <transition name="fade">
+            <MapLoader v-show="!mapLoaded" />
+        </transition>
+
+        <transition name="fade" :duration="300">
+            <div
+                v-show="mapLoaded"
+                class="map-wrapper"
+                :class="{ dragging, editing: $store.state.createMode }"
+                :style="{
+                    transform: `scale(${zoom})`,
+                    width: `${W}px`,
+                    height: `${H}px`,
+                    left: `${pos.x}px`,
+                    top: `${pos.y}px`,
+                }"
+                @mousedown.left="mapMouseDown"
+                @click.left="mapClick"
+            >
+                <img
+                    class="map"
+                    draggable="false"
+                    src="@/assets/img/map.jpg"
+                    @load="mapLoaded = true"
+                />
+                <MapMarkers />
+            </div>
+        </transition>
+
+        <transition name="fade" :duration="300">
+            <MapOverlay v-if="mapLoaded" />
+        </transition>
     </div>
 </template>
 
 <script>
 import { W, H, ZOOM_STEP, MIN_ZOOM, MAX_ZOOM } from '@/lib/constants';
 import MapMarkers from '@/components/MapMarkers';
+import MapLoader from '@/components/MapLoader';
 import MapOverlay from '@/components/MapOverlay';
 
 export default {
     components: {
         MapMarkers,
+        MapLoader,
         MapOverlay,
     },
     data() {
@@ -36,6 +53,7 @@ export default {
             moved: false,
             W,
             H,
+            mapLoaded: false,
         };
     },
     methods: {
