@@ -97,8 +97,8 @@ export default {
 
 <style scoped>
 .overlay {
-    position: fixed;
-    z-index: 10;
+    position: absolute;
+    z-index: 5;
     width: 100vw;
     height: 100vh;
     top: 0;

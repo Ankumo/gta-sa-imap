@@ -1,14 +1,12 @@
 <template>
     <div id="app">
         <Map />
-        <Overlay />
         <Settings />
     </div>
 </template>
 
 <script>
 import Map from '@/components/Map';
-import Overlay from '@/components/Overlay';
 import Settings from '@/components/Settings';
 import pointCall from './lib/dev';
 
@@ -16,7 +14,6 @@ export default {
     name: 'App',
     components: {
         Map,
-        Overlay,
         Settings,
     },
     methods: {

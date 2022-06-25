@@ -16,16 +16,19 @@
             <img class="map" draggable="false" src="@/assets/img/map.jpg" />
             <MapMarkers />
         </div>
+        <MapOverlay />
     </div>
 </template>
 
 <script>
 import { W, H, ZOOM_STEP, MIN_ZOOM, MAX_ZOOM } from '@/lib/constants';
 import MapMarkers from '@/components/MapMarkers';
+import MapOverlay from '@/components/MapOverlay';
 
 export default {
     components: {
         MapMarkers,
+        MapOverlay,
     },
     data() {
         return {
