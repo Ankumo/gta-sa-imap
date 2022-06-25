@@ -1,38 +1,38 @@
 <template>
     <div class="point-creation">
         <div class="grid">
-            <AppInput 
-                :value="item.x" 
-                placeholder="X" 
+            <AppInput
+                :value="item.x"
+                placeholder="X"
                 type="number"
                 @input="setItemField('x', $event)"
             />
-            <AppInput 
-                :value="item.y" 
-                placeholder="Y" 
+            <AppInput
+                :value="item.y"
+                placeholder="Y"
                 type="number"
                 @input="setItemField('y', $event)"
             />
-            <AppSelect 
-                :options="typeOptions" 
-                :value="item.type" 
+            <AppSelect
+                :options="typeOptions"
+                :value="item.type"
                 :disabled="activePoint.idx !== undefined"
                 @input="setItemField('type', $event)"
             />
-            <AppButton @click.left.native="$store.commit('setCreateMode', false)">
+            <AppButton
+                @click.left.native="$store.commit('setCreateMode', false)"
+            >
                 Cancel
             </AppButton>
-            <AppInput 
-                multiline 
-                :value="item.desc" 
-                class="desc" 
+            <AppInput
+                multiline
+                :value="item.desc"
+                class="desc"
                 rows="3"
                 placeholder="Description"
                 @input="setItemField('desc', $event)"
             />
-            <AppButton @click.left.native="save">
-                Save
-            </AppButton>
+            <AppButton @click.left.native="save"> Save </AppButton>
         </div>
     </div>
 </template>
@@ -48,7 +48,7 @@ export default {
     components: {
         AppButton,
         AppInput,
-        AppSelect
+        AppSelect,
     },
     methods: {
         async save() {
@@ -60,58 +60,60 @@ export default {
             this.$store.commit('setCreateMode', false);
         },
         setItemField(type, value) {
-            this.$store.commit('mergeActivePoint', {[type]: value});
-        }
+            this.$store.commit('mergeActivePoint', { [type]: value });
+        },
     },
     computed: {
         typeOptions() {
-            return [{
-                value: null,
-                text: 'Choose type',
-                disabled: true
-            }, 
-            ...Object.entries(Objectives).map(([k, v]) => ({
-                value: v,
-                text: k
-            }))];
+            return [
+                {
+                    value: null,
+                    text: 'Choose type',
+                    disabled: true,
+                },
+                ...Object.entries(Objectives).map(([k, v]) => ({
+                    value: v,
+                    text: k,
+                })),
+            ];
         },
         activePoint() {
             return this.$store.state.activePoint;
         },
         item() {
             return this.activePoint.point;
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style scoped>
-    .point-creation {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 0 5px 0 rgba(0, 0, 0, .4);
-        padding: 1rem;
-    }
+.point-creation {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+}
 
-    .grid {
-        width: 470px;
-        display: grid;
-        grid-gap: 1rem;
-        align-items: center;
-        grid-template-columns: 1fr 1fr 2fr auto;
-    }
+.grid {
+    width: 470px;
+    display: grid;
+    grid-gap: 1rem;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 2fr auto;
+}
 
-    .grid input,
-    .grid textarea {
-        min-width: 0;
-    }
+.grid input,
+.grid textarea {
+    min-width: 0;
+}
 
-    .grid .btn {
-        padding: .5rem .75rem;
-        justify-content: center;
-    }
+.grid .btn {
+    padding: 0.5rem 0.75rem;
+    justify-content: center;
+}
 
-    .desc {
-        grid-column: 1 / 4;
-    }
+.desc {
+    grid-column: 1 / 4;
+}
 </style>

@@ -1,23 +1,19 @@
 <template>
     <div class="map-container">
-        <div 
+        <div
             class="map-wrapper"
-            :class="{dragging, editing: $store.state.createMode}"
+            :class="{ dragging, editing: $store.state.createMode }"
             :style="{
                 transform: `scale(${zoom})`,
                 width: `${W}px`,
                 height: `${H}px`,
                 left: `${pos.x}px`,
-                top: `${pos.y}px`
+                top: `${pos.y}px`,
             }"
             @mousedown.left="mapMouseDown"
             @click.left="mapClick"
         >
-            <img 
-                class="map"
-                draggable="false"
-                src="@/assets/img/map.jpg"
-            />
+            <img class="map" draggable="false" src="@/assets/img/map.jpg" />
             <MapMarkers />
         </div>
     </div>
@@ -29,15 +25,15 @@ import MapMarkers from '@/components/MapMarkers';
 
 export default {
     components: {
-        MapMarkers
+        MapMarkers,
     },
     data() {
         return {
             dragging: false,
             moved: false,
             W,
-            H
-        }
+            H,
+        };
     },
     methods: {
         movePos(x, y) {
@@ -60,13 +56,13 @@ export default {
                 y = window.innerHeight / 2 - H * this.zoom;
             }
 
-            this.pos = {x, y};
+            this.pos = { x, y };
         },
         getMapPoint(clientX, clientY) {
             return {
                 x: (clientX - this.pos.x) / this.zoom,
-                y: (clientY - this.pos.y) / this.zoom
-            }
+                y: (clientY - this.pos.y) / this.zoom,
+            };
         },
         windowMouseUp() {
             this.dragging = false;
@@ -92,7 +88,10 @@ export default {
                 return;
             }
 
-            if (process.env.NODE_ENV !== 'development' || !this.$store.state.createMode) {
+            if (
+                process.env.NODE_ENV !== 'development' ||
+                !this.$store.state.createMode
+            ) {
                 return;
             }
 
@@ -104,7 +103,9 @@ export default {
             this.$store.commit('mergeActivePoint', coords);
         },
         setZoom(direction) {
-            let newZoom = direction ? this.zoom + ZOOM_STEP : this.zoom - ZOOM_STEP;
+            let newZoom = direction
+                ? this.zoom + ZOOM_STEP
+                : this.zoom - ZOOM_STEP;
 
             if (newZoom > MAX_ZOOM) {
                 newZoom = MAX_ZOOM;
@@ -116,25 +117,31 @@ export default {
                 return;
             }
 
-            const centerPoint = this.getMapPoint(window.innerWidth / 2, window.innerHeight / 2);
+            const centerPoint = this.getMapPoint(
+                window.innerWidth / 2,
+                window.innerHeight / 2,
+            );
 
             this.zoom = newZoom;
 
-            const centerPointNew = this.getMapPoint(window.innerWidth / 2, window.innerHeight / 2);
+            const centerPointNew = this.getMapPoint(
+                window.innerWidth / 2,
+                window.innerHeight / 2,
+            );
 
             const d = {
                 x: (centerPointNew.x - centerPoint.x) * newZoom,
-                y: (centerPointNew.y - centerPoint.y) * newZoom
+                y: (centerPointNew.y - centerPoint.y) * newZoom,
             };
 
-            this.movePos(d.x , d.y);
+            this.movePos(d.x, d.y);
         },
         zoomIn() {
             this.setZoom(true);
         },
         zoomOut() {
             this.setZoom(false);
-        }
+        },
     },
     computed: {
         zoom: {
@@ -143,7 +150,7 @@ export default {
             },
             set(value) {
                 this.$store.commit('setZoom', value);
-            }
+            },
         },
         pos: {
             get() {
@@ -151,8 +158,8 @@ export default {
             },
             set(value) {
                 this.$store.commit('setMapPos', value);
-            }
-        }
+            },
+        },
     },
     mounted() {
         window.addEventListener('mouseup', this.windowMouseUp);
@@ -167,8 +174,8 @@ export default {
         window.removeEventListener('mousemove', this.windowMouseMove);
         this.$eventBus.$off('zoomIn', this.zoomIn);
         this.$eventBus.$off('zoomOut', this.zoomOut);
-    }
-}
+    },
+};
 </script>
 
 <style scoped>

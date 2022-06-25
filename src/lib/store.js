@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import { Objectives } from './constants'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { Objectives } from './constants';
 
 Vue.use(Vuex);
 
@@ -10,7 +10,7 @@ export default new Vuex.Store({
     state: {
         mapPos: {
             x: 0,
-            y: 0
+            y: 0,
         },
         zoom: 0.4,
         found: {
@@ -18,13 +18,14 @@ export default new Vuex.Store({
             [Objectives.GRAFFITI]: [],
             [Objectives.HORSESHOE]: [],
             [Objectives.PHOTO]: [],
-            [Objectives.TRAMP]: []
+            [Objectives.TRAMP]: [],
         },
         visible: [],
         createMode: false,
         activePoint: null,
         settingsOpened: false,
-        lastPointType: objectives[Math.floor(Math.random() * objectives.length)]
+        lastPointType:
+            objectives[Math.floor(Math.random() * objectives.length)],
     },
     mutations: {
         setZoom(state, payload) {
@@ -40,7 +41,10 @@ export default new Vuex.Store({
         setVisible(state, payload) {
             state.visible = payload;
 
-            window.localStorage.setItem('lastVisible', JSON.stringify(state.visible));
+            window.localStorage.setItem(
+                'lastVisible',
+                JSON.stringify(state.visible),
+            );
         },
         setCreateMode(state, payload) {
             state.createMode = payload;
@@ -53,17 +57,23 @@ export default new Vuex.Store({
             }
         },
         mergeActivePoint(state, payload) {
-            state.activePoint = {...state.activePoint, point: {...state.activePoint.point, ...payload } };
+            state.activePoint = {
+                ...state.activePoint,
+                point: { ...state.activePoint.point, ...payload },
+            };
             state.lastPointType = state.activePoint.point.type;
         },
         setMapPos(state, payload) {
             state.mapPos = payload;
 
-            window.localStorage.setItem('lastPos', JSON.stringify(state.mapPos));
+            window.localStorage.setItem(
+                'lastPos',
+                JSON.stringify(state.mapPos),
+            );
         },
         setSettingsOpened(state, payload) {
             state.settingsOpened = payload;
-        }
+        },
     },
     actions: {
         init({ state, commit }) {
@@ -73,7 +83,7 @@ export default new Vuex.Store({
             try {
                 const gmm = JSON.parse(foundRaw);
 
-                Object.keys(gmm).forEach(k => {
+                Object.keys(gmm).forEach((k) => {
                     if (!objectives.includes(k) || !Array.isArray(gmm[k])) {
                         return;
                     }
@@ -84,36 +94,38 @@ export default new Vuex.Store({
                 console.warn('Found resetted');
             }
 
-            commit('setFound', {...state.found, ...found });
+            commit('setFound', { ...state.found, ...found });
 
-            const lastZoom = parseFloat(window.localStorage.getItem('lastZoom'));
+            const lastZoom = parseFloat(
+                window.localStorage.getItem('lastZoom'),
+            );
 
             if (!isNaN(lastZoom)) {
                 commit('setZoom', lastZoom);
             }
 
             try {
-                const lastPos = JSON.parse(window.localStorage.getItem('lastPos'));
+                const lastPos = JSON.parse(
+                    window.localStorage.getItem('lastPos'),
+                );
 
                 if (lastPos && lastPos.x && lastPos.y) {
                     commit('setMapPos', lastPos);
                 }
-            } catch {
-
-            }
+            } catch {}
 
             try {
-                const lastVisible = JSON.parse(window.localStorage.getItem('lastVisible'));
+                const lastVisible = JSON.parse(
+                    window.localStorage.getItem('lastVisible'),
+                );
 
                 if (lastVisible && Array.isArray(lastVisible)) {
                     commit('setVisible', lastVisible);
                 }
-            } catch {
-
-            }
+            } catch {}
         },
         toggleFound({ state, commit }, { key, idx }) {
-            const found = {...state.found };
+            const found = { ...state.found };
             const index = found[key].indexOf(idx);
 
             if (~index) {
@@ -122,7 +134,7 @@ export default new Vuex.Store({
                 found[key].push(idx);
             }
 
-            found[key] = found[key].filter(item => typeof item === 'number');
+            found[key] = found[key].filter((item) => typeof item === 'number');
 
             commit('setFound', found);
         },
@@ -138,6 +150,6 @@ export default new Vuex.Store({
             }
 
             commit('setVisible', visible);
-        }
-    }
-})
+        },
+    },
+});

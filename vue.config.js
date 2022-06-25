@@ -2,38 +2,43 @@ const fs = require('fs');
 const formidable = require('express-formidable');
 
 module.exports = {
-    chainWebpack: config => {
-        config.plugin('html').tap(args => {
+    chainWebpack: (config) => {
+        config.plugin('html').tap((args) => {
             args[0].title = 'GTA:SA Интерактивная карта';
             return args;
-        })
+        });
 
         const svgRule = config.module.rule('svg');
         svgRule.uses.clear();
     },
     configureWebpack: {
         module: {
-            rules: [{
-                test: /\.svg$/,
-                oneOf: [{
-                        resourceQuery: /inline/,
-                        loader: 'file-loader'
-                    },
-                    {
-                        use: [
-                            'babel-loader',
-                            {
-                                loader: 'vue-svg-loader',
-                                options: {
-                                    svgo: {
-                                        plugins: [{ removeDimensions: true }]
-                                    }
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }]
+            rules: [
+                {
+                    test: /\.svg$/,
+                    oneOf: [
+                        {
+                            resourceQuery: /inline/,
+                            loader: 'file-loader',
+                        },
+                        {
+                            use: [
+                                'babel-loader',
+                                {
+                                    loader: 'vue-svg-loader',
+                                    options: {
+                                        svgo: {
+                                            plugins: [
+                                                { removeDimensions: true },
+                                            ],
+                                        },
+                                    },
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
         },
         devServer: {
             before(app) {
@@ -44,7 +49,7 @@ module.exports = {
                 app.post('/dev/point', (req, res) => {
                     const { type, data } = req.fields;
                     const dictRaw = fs.readFileSync(dictPath, {
-                        encoding: 'utf-8'
+                        encoding: 'utf-8',
                     });
 
                     const dict = JSON.parse(dictRaw);
@@ -68,7 +73,7 @@ module.exports = {
 
                     res.send('ok');
                 });
-            }
-        }
-    }
-}
+            },
+        },
+    },
+};

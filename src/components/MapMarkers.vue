@@ -1,16 +1,16 @@
 <template>
     <div class="markers">
-        <div 
+        <div
             v-for="(v, k) in dict"
             :key="k"
             :class="['label-field', k]"
             v-show="$store.state.visible.includes(k)"
         >
-            <MapMarker 
+            <MapMarker
                 v-for="(lb, index) in v"
                 :key="index"
                 :index="index"
-                :item="{...lb, type: k}"
+                :item="{ ...lb, type: k }"
                 v-show="showLabel(k, index)"
             />
         </div>
@@ -26,21 +26,25 @@ import MapMarker from '@/components/MapMarker';
 
 export default {
     components: {
-        MapMarker
+        MapMarker,
     },
     data() {
         return {
-            dict
-        }
+            dict,
+        };
     },
     methods: {
         showLabel(type, index) {
-            if (this.createMode && this.activePoint.point.type === type && this.activePoint.idx === index) {
+            if (
+                this.createMode &&
+                this.activePoint.point.type === type &&
+                this.activePoint.idx === index
+            ) {
                 return false;
             }
 
             return true;
-        }
+        },
     },
     computed: {
         activePoint() {
@@ -48,19 +52,19 @@ export default {
         },
         createMode() {
             return this.$store.state.createMode;
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style scoped>
-    .labels {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 3;
-        pointer-events: none;
-    }
+.labels {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    pointer-events: none;
+}
 </style>

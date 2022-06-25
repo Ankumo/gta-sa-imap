@@ -1,7 +1,7 @@
 /**
  * Make a call to mock API
- * @param {'edit' | 'delete' | 'add'} type 
- * @param {*} data 
+ * @param {'edit' | 'delete' | 'add'} type
+ * @param {*} data
  */
 export default (type, data) => {
     return new Promise((r, rj) => {
@@ -13,10 +13,10 @@ export default (type, data) => {
             r(xhr.response);
         };
 
-        xhr.onerror = e => {
+        xhr.onerror = (e) => {
             rj(xhr.status);
         };
 
         xhr.send(JSON.stringify({ type, data }));
     });
-}
+};

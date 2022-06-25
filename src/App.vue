@@ -17,12 +17,15 @@ export default {
     components: {
         Map,
         Overlay,
-        Settings
+        Settings,
     },
     methods: {
         async keyUp(e) {
-            if (e.keyCode !== 46 || process.env.NODE_ENV !== 'development' || 
-                !this.$store.state.createMode) {
+            if (
+                e.keyCode !== 46 ||
+                process.env.NODE_ENV !== 'development' ||
+                !this.$store.state.createMode
+            ) {
                 return;
             }
 
@@ -31,26 +34,28 @@ export default {
             if (activePoint.idx === undefined) {
                 this.$store.commit('setCreateMode', false);
                 return;
-            }   
+            }
 
-            const answer = confirm('Are you sure you want to remove this marker?');
-            
+            const answer = confirm(
+                'Are you sure you want to remove this marker?',
+            );
+
             if (answer) {
                 const result = await pointCall('delete', activePoint);
 
                 console.log('delete', activePoint, result);
-                
+
                 this.$store.commit('setCreateMode', false);
             }
-        }
+        },
     },
     mounted() {
         window.addEventListener('keyup', this.keyUp);
     },
     destroyed() {
         window.removeEventListener('keyup', this.keyUp);
-    }
-}
+    },
+};
 </script>
 
 <style>
@@ -63,18 +68,22 @@ export default {
     user-select: none;
 }
 
-html, body {
+html,
+body {
     overflow: hidden;
     width: 100%;
     height: 100%;
     background: url('assets/img/bg.jpg');
 }
 
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .2s;
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s;
 }
 
-.fade-enter, .fade-leave, .fade-leave-to {
+.fade-enter,
+.fade-leave,
+.fade-leave-to {
     opacity: 0;
 }
 </style>

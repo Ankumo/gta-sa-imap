@@ -9,13 +9,13 @@ export const Objectives = {
     GRAFFITI: 'graffiti',
     HORSESHOE: 'horseshoe',
     PHOTO: 'photo',
-    TRAMP: 'tramp'
-}
+    TRAMP: 'tramp',
+};
 
 export const ObjectivesTitles = {
     [Objectives.TRAMP]: 'Трамплины',
     [Objectives.HORSESHOE]: 'Подковы',
     [Objectives.GRAFFITI]: 'Граффити',
     [Objectives.CLAM]: 'Ракушки',
-    [Objectives.PHOTO]: 'Фотографии'
-}
+    [Objectives.PHOTO]: 'Фотографии',
+};
